@@ -5,7 +5,8 @@ import numpy as np
 import data_loader.data_loaders as module_data
 import model.loss as module_loss
 import model.metric as module_metric
-import model.model as module_arch
+import importlib
+
 from parse_config import ConfigParser
 from trainer import Trainer
 from utils import prepare_device
@@ -24,6 +25,9 @@ def main(config):
     # setup data_loader instances
     data_loader = config.init_obj('data_loader', module_data)
     valid_data_loader = data_loader.split_validation()
+
+    module_path = config['arch_module']
+    module_arch = importlib.import_module(module_path)
 
     # build model architecture, then print to console
     model = config.init_obj('arch', module_arch)
