@@ -1,19 +1,19 @@
 {
-    "name": "Mnist_LeNet",
+    "name": "GW_Denoise",
     "n_gpu": 1,
 
     "arch": {
-        "type": "MnistModel",
+        "type": "TestModel",
         "args": {}
     },
     "data_loader": {
-        "type": "MnistDataLoader",
+        "type": "GWDataLoader",
         "args":{
-            "data_dir": "data/",
-            "batch_size": 128,
+            "data_dir": "data/GW/",
+            "batch_size": 16,
             "shuffle": true,
             "validation_split": 0.1,
-            "num_workers": 2
+            "num_workers": 8
         }
     },
     "optimizer": {
@@ -24,9 +24,9 @@
             "amsgrad": true
         }
     },
-    "loss": "nll_loss",
+    "loss": "mse_loss",
     "metrics": [
-        "accuracy", "top_k_acc"
+        "mse_score"
     ],
     "lr_scheduler": {
         "type": "StepLR",
