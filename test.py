@@ -1,10 +1,10 @@
 import argparse
 import torch
+import importlib
 from tqdm import tqdm
 import data_loader.data_loaders as module_data
 import model.loss as module_loss
 import model.metric as module_metric
-import dense_lstm_denoise.model.sepformer as module_arch
 from parse_config import ConfigParser
 
 
@@ -20,6 +20,9 @@ def main(config):
         training=False,
         num_workers=2
     )
+
+    module_path = config['arch_module']
+    module_arch = importlib.import_module(module_path)
 
     # build model architecture
     model = config.init_obj('arch', module_arch)
@@ -48,10 +51,6 @@ def main(config):
         for i, (data, target) in enumerate(tqdm(data_loader)):
             data, target = data.to(device), target.to(device)
             output = model(data)
-
-            #
-            # save sample images, or do something with output here
-            #
 
             # computing loss, metrics on test set
             loss = loss_fn(output, target)
